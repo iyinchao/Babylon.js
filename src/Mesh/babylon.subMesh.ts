@@ -33,6 +33,7 @@
         public _renderId = 0;
         public _alphaIndex: number;
         public _distanceToCamera: number;
+        public _distanceToCameraProjectionZ: number; // Add this to make distance sorting more accurate.
         public _id: number;
 
         private _currentMaterial: Nullable<Material>;

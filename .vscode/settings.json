@@ -35,5 +35,7 @@
         "**/*.d.ts": true,
         "assets":true
     },
-    "typescript.check.workspaceVersion": false
+    "typescript.check.workspaceVersion": false,
+    "eslint.enable": false,
+    "jshint.enable": false
 }

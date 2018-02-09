@@ -44,6 +44,84 @@
         public static fallbackTexture = "data:image/jpg;base64,/9j/4AAQSkZJRgABAQEAYABgAAD/4QBmRXhpZgAATU0AKgAAAAgABAEaAAUAAAABAAAAPgEbAAUAAAABAAAARgEoAAMAAAABAAIAAAExAAIAAAAQAAAATgAAAAAAAABgAAAAAQAAAGAAAAABcGFpbnQubmV0IDQuMC41AP/bAEMABAIDAwMCBAMDAwQEBAQFCQYFBQUFCwgIBgkNCw0NDQsMDA4QFBEODxMPDAwSGBITFRYXFxcOERkbGRYaFBYXFv/bAEMBBAQEBQUFCgYGChYPDA8WFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFv/AABEIAQABAAMBIgACEQEDEQH/xAAfAAABBQEBAQEBAQAAAAAAAAAAAQIDBAUGBwgJCgv/xAC1EAACAQMDAgQDBQUEBAAAAX0BAgMABBEFEiExQQYTUWEHInEUMoGRoQgjQrHBFVLR8CQzYnKCCQoWFxgZGiUmJygpKjQ1Njc4OTpDREVGR0hJSlNUVVZXWFlaY2RlZmdoaWpzdHV2d3h5eoOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4eLj5OXm5+jp6vHy8/T19vf4+fr/xAAfAQADAQEBAQEBAQEBAAAAAAAAAQIDBAUGBwgJCgv/xAC1EQACAQIEBAMEBwUEBAABAncAAQIDEQQFITEGEkFRB2FxEyIygQgUQpGhscEJIzNS8BVictEKFiQ04SXxFxgZGiYnKCkqNTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqCg4SFhoeIiYqSk5SVlpeYmZqio6Slpqeoqaqys7S1tre4ubrCw8TFxsfIycrS09TV1tfY2dri4+Tl5ufo6ery8/T19vf4+fr/2gAMAwEAAhEDEQA/APH6KKK+FP76Pl+iiivuj+BT6gooor4U/vo+X6KKK+6P4FPqCiiivhT++j5fooor7o/gU+oKKKK+FP76Pl+iiivuj+BT6gooor4U/vo+X6KKK+6P4FPqCiiivhT++j5fooor7o/gU+oKKKK+FP76Pl+iiivuj+BT6gooor4U/vo+X6KKK+6P4FCiiigD6gooor4U/vo+X6KKK+6P4FPqCiiivhT++j5fooor7o/gU+oKKKK+FP76Pl+iiivuj+BT6gooor4U/vo+X6KKK+6P4FPqCiiivhT++j5fooor7o/gU+oKKKK+FP76Pl+iiivuj+BT6gooor4U/vo+X6KKK+6P4FPqCiiivhT++gooooA+X6KKK+6P4FPqCiiivhT++j5fooor7o/gU+oKKKK+FP76Pl+iiivuj+BT6gooor4U/vo+X6KKK+6P4FPqCiiivhT++j5fooor7o/gU+oKKKK+FP76Pl+iiivuj+BT6gooor4U/vo+X6KKK+6P4FPqCiiivhT++j5fooor7o/gUKKKKAPqCiiivhT++j5fooor7o/gU+oKKKK+FP76Pl+iiivuj+BT6gooor4U/vo+X6KKK+6P4FPqCiiivhT++j5fooor7o/gU+oKKKK+FP76Pl+iiivuj+BT6gooor4U/vo+X6KKK+6P4FPqCiiivhT++j5fooor7o/gU+oKKKK+FP76CiiigD5fooor7o/gU+oKKKK+FP76Pl+iiivuj+BT6gooor4U/vo+X6KKK+6P4FPqCiiivhT++j5fooor7o/gU+oKKKK+FP76Pl+iiivuj+BT6gooor4U/vo+X6KKK+6P4FPqCiiivhT++j5fooor7o/gU+oKKKK+FP76Pl+iiivuj+BQooooA+oKKKK+FP76Pl+iiivuj+BT6gooor4U/vo+X6KKK+6P4FPqCiiivhT++j5fooor7o/gU+oKKKK+FP76Pl+iiivuj+BT6gooor4U/vo+X6KKK+6P4FPqCiiivhT++j5fooor7o/gU+oKKKK+FP76Pl+iiivuj+BT6gooor4U/voKKKKAPl+iiivuj+BT6gooor4U/vo+X6KKK+6P4FPqCiiivhT++j5fooor7o/gU+oKKKK+FP76Pl+iiivuj+BT6gooor4U/vo+X6KKK+6P4FPqCiiivhT++j5fooor7o/gU+oKKKK+FP76Pl+iiivuj+BT6gooor4U/vo+X6KKK+6P4FCiiigD6gooor4U/vo+X6KKK+6P4FPqCiiivhT++j5fooor7o/gU+oKKKK+FP76Pl+iiivuj+BT6gooor4U/vo+X6KKK+6P4FPqCiiivhT++j5fooor7o/gU+oKKKK+FP76Pl+iiivuj+BT6gooor4U/vo+X6KKK+6P4FPqCiiivhT++gooooA+X6KKK+6P4FPqCiiivhT++j5fooor7o/gU+oKKKK+FP76Pl+iiivuj+BT6gooor4U/vo+X6KKK+6P4FPqCiiivhT++j5fooor7o/gU+oKKKK+FP76Pl+iiivuj+BT6gooor4U/vo+X6KKK+6P4FPqCiiivhT++j5fooor7o/gUKKKKAPqCiiivhT++j5fooor7o/gU+oKKKK+FP76Pl+iiivuj+BT6gooor4U/vo+X6KKK+6P4FPqCiiivhT++j5fooor7o/gU+oKKKK+FP76Pl+iiivuj+BT6gooor4U/vo+X6KKK+6P4FPqCiiivhT++j5fooor7o/gU+oKKKK+FP76CiiigD5fooor7o/gU+oKKKK+FP76Pl+iiivuj+BT6gooor4U/vo+X6KKK+6P4FPqCiiivhT++j5fooor7o/gU+oKKKK+FP76Pl+iiivuj+BT6gooor4U/vo+X6KKK+6P4FPqCiiivhT++j5fooor7o/gU+oKKKK+FP76Pl+iiivuj+BQooooA+oKKKK+FP76Pl+iiivuj+BT6gooor4U/vo+X6KKK+6P4FPqCiiivhT++j5fooor7o/gU+oKKKK+FP76Pl+iiivuj+BT6gooor4U/vo+X6KKK+6P4FPqCiiivhT++j5fooor7o/gU+oKKKK+FP76Pl+iiivuj+BT6gooor4U/voKKKKAPl+iiivuj+BT6gooor4U/vo+X6KKK+6P4FPqCiiivhT++j5fooor7o/gU+oKKKK+FP76Pl+iiivuj+BT6gooor4U/vo+X6KKK+6P4FPqCiiivhT++j5fooor7o/gU+oKKKK+FP76Pl+iiivuj+BT6gooor4U/vo+X6KKK+6P4FCiiigD6gooor4U/vo+X6KKK+6P4FPqCiiivhT++j5fooor7o/gU+oKKKK+FP76Pl+iiivuj+BT6gooor4U/vo+X6KKK+6P4FPqCiiivhT++j5fooor7o/gU+oKKKK+FP76Pl+iiivuj+BT6gooor4U/vo+X6KKK+6P4FPqCiiivhT++gooooA+X6KKK+6P4FPqCiiivhT++j5fooor7o/gU+oKKKK+FP76Pl+iiivuj+BT6gooor4U/vo+X6KKK+6P4FPqCiiivhT++j5fooor7o/gU+oKKKK+FP76Pl+iiivuj+BT6gooor4U/vo+X6KKK+6P4FPqCiiivhT++j5fooor7o/gUKKKKAPqCiiivhT++j5fooor7o/gU+oKKKK+FP76Pl+iiivuj+BT6gooor4U/vo+X6KKK+6P4FPqCiiivhT++j5fooor7o/gU+oKKKK+FP76Pl+iiivuj+BT6gooor4U/vo+X6KKK+6P4FPqCiiivhT++j5fooor7o/gU+oKKKK+FP76P//Z";
 
         /**
+         * Convert one IEEE-754 float (32 bit) number to two RGBA group (2 \* 4 \* 8 = 64 bit)
+         * @author Charlieyin
+         * @param f The input float number
+         * @param buffer The target Uint8Array
+         * @param offset The target buffer offset
+         */
+        public static convertFloatToRGBA8(f: number, buffer: Uint8Array, offset: number): void {
+            let decPart = f % 1;
+            let intPart = f - decPart;
+
+            var absDec = Math.abs(decPart);
+            var x = (1.0 * absDec) % 1;
+	        var y = (255.0 * absDec) % 1;
+	        var z = (65025.0 * absDec) % 1;
+            var w = (160581375.0 * absDec) % 1;
+            
+            x -= (y * 1.0 / 255.0);
+	        y -= (z * 1.0 / 255.0);
+            z -= (w * 1.0 / 255.0);
+            
+            buffer[offset] = x * 255.0;
+	        buffer[offset + 1] = y * 255.0;
+	        buffer[offset + 2] = z * 255.0;
+            buffer[offset + 3] = w * 255.0;
+            
+            var absInt = Math.abs(intPart);
+	        buffer[offset + 4] = absInt & 0x000000ff;
+	        buffer[offset + 5] = (absInt >> 8) & 0x000000ff;
+	        buffer[offset + 6] = (absInt >> 16) & 0x000000ff;
+	        buffer[offset + 7] = f < 0 ? 0 : 255;
+        }
+
+        /**
+         * Convert two RGBA group(2 \* 4 \* 8 = 64 bit) to one IEEE-754 float (32 bit) number
+         * @author Charlieyin
+         * @param buffer The input Uint8Array source
+         * @param offset The input buffer offset
+         */
+        public static convertRGBA8ToFloat(buffer: Uint8Array, offset: number): number {
+            var x = buffer[offset] / 255.0;
+	        var y = buffer[offset + 1] / 255.0;
+	        var z = buffer[offset + 2] / 255.0;
+	        var w = buffer[offset + 3] / 255.0;
+
+	        var r = buffer[offset + 4] / 255.0;
+	        var g = buffer[offset + 5] / 255.0;
+	        var b = buffer[offset + 6] / 255.0;
+	        var a = buffer[offset + 7] / 255.0;
+
+	        var frac = (x) + (y) * 1 / 255.0 + (z) * 1 / 65025.0 + (w) * 1 / 160581375.0;
+	        var decimal = Math.floor(r * 255.0 + 0.5) + Math.floor(g * 255.0 + 0.5) * 255.0 + Math.floor(b * 255.0 + 0.5) * 65025.0;
+
+	        var f = (decimal + frac) * (a*2.0 - 1.0);
+
+	        return f;
+        }
+
+        /**
+         * Batch convert Float32Array typed buffer to RGBA8 buffer.
+         * @author Charlieyin
+         * @param source Source buffer to get matrix elements as float number
+         * @param target Target buffer to store converted RGBA8 format number
+         * @param matrixCount The number of matrices stored in source buffer
+         */ 
+        public static convertMatricesToRGBA8(source: Float32Array, target: Uint8Array, matrixCount: number): void {
+            var offsetSource = 0;
+            var offsetTarget = 0; 
+            for (var c: number = 0; c < matrixCount; c++) {
+                for (var i: number = 0; i < 16; i ++) {
+                    offsetSource = c * 16 + i;
+                    offsetTarget = offsetSource * 8;
+
+                    this.convertFloatToRGBA8(source[offsetSource], target, offsetTarget);
+                }
+            }
+        }
+
+        /**
 		 * Interpolates between a and b via alpha
 		 * @param a The lower value (returned when alpha = 0)
 		 * @param b The upper value (returned when alpha = 1)
@@ -416,7 +494,7 @@
         }
 
         public static PreprocessUrl = (url: string) => {
-            return url;
+            return encodeURI(url);
         }
 
         public static LoadImage(url: any, onLoad: (img: HTMLImageElement) => void, onError: (message?: string, exception?: any) => void, database: Nullable<Database>): HTMLImageElement {

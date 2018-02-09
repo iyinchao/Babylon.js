@@ -98,10 +98,18 @@ module BABYLON {
 
         private _syncActiveTargets(needUpdate: boolean): void {
             let influenceCount = 0;
+            let targetCount = 0;
             this._activeTargets.reset();
             this._supportsNormals = true;
             this._supportsTangents = true;
             this._vertexCount = 0;
+
+            // NOTE: Remove targets if number is too much
+            // Sort targets by influence
+            this._targets.sort((a, b) => {
+                return b.influence - a.influence
+            });
+
             for (var target of this._targets) {
                 if (target.influence > 0) {
                     this._activeTargets.push(target);
@@ -125,6 +133,24 @@ module BABYLON {
                         return;
                     }
                 }
+            }
+
+            // Set count of targets according to GLTF spec: 
+            // https://github.com/KhronosGroup/glTF/tree/master/specification/2.0#morph-targets
+            // If with normals, 4 targets. If with both normals and tangents, 2 targets.
+            if (this._supportsNormals && !this._supportsTangents) {
+                targetCount = 4;
+            }
+
+            if (this._supportsNormals && this._supportsTangents) {
+                targetCount = 2;
+            }
+
+            targetCount = Math.min(targetCount, this._targets.length);
+
+            if (influenceCount > targetCount) {
+                influenceCount = targetCount;
+                this._activeTargets.length = targetCount;
             }
 
             if (!this._influences || this._influences.length !== influenceCount) {

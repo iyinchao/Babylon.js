@@ -1236,6 +1236,18 @@
             },
             {
                 "files": [
+                    "../../materialsLibrary/src/nutSimple/babylon.nutSimpleMaterial.ts"
+                ],
+                "shaderFiles": [
+                    "../../materialsLibrary/src/nutSimple/nutSimple100.vertex.fx",
+                    "../../materialsLibrary/src/nutSimple/nutSimple100.fragment.fx",
+                    "../../materialsLibrary/src/nutSimple/nutSimple300.vertex.fx",
+                    "../../materialsLibrary/src/nutSimple/nutSimple300.fragment.fx"
+                ],
+                "output": "babylon.nutSimpleMaterial.js"
+            },
+            {
+                "files": [
                     "../../materialsLibrary/src/water/babylon.waterMaterial.ts"
                 ],
                 "shaderFiles": [

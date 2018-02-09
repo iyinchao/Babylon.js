@@ -173,6 +173,20 @@
             return RenderingGroup.renderSorted(subMeshes, this._transparentSortCompareFn, this._scene.activeCamera, true);
         }
 
+        // Project vector using matrix
+        private static projectVector(vector: Vector3, matrix: Matrix): Vector3 {
+            const v = vector.clone()
+            var x = v.x, y = v.y, z = v.z;
+            const e = matrix.m;
+
+            var d = 1 / ( e[ 3 ] * x + e[ 7 ] * y + e[ 11 ] * z + e[ 15 ] );
+
+            v.x = ( e[ 0 ] * x + e[ 4 ] * y + e[ 8 ]  * z + e[ 12 ] ) * d;
+            v.y = ( e[ 1 ] * x + e[ 5 ] * y + e[ 9 ]  * z + e[ 13 ] ) * d;
+            v.z = ( e[ 2 ] * x + e[ 6 ] * y + e[ 10 ] * z + e[ 14 ] ) * d;
+            return v
+        } 
+
         /**
          * Renders the submeshes in a specified order.
          * @param subMeshes The submeshes to sort before render
@@ -184,10 +198,12 @@
             let subIndex = 0;
             let subMesh: SubMesh;
             let cameraPosition = camera ? camera.globalPosition : Vector3.Zero();
+            let transformMatrix = camera ? camera.getTranformationMatrix() : Matrix.Identity();
             for (; subIndex < subMeshes.length; subIndex++) {
                 subMesh = subMeshes.data[subIndex];
                 subMesh._alphaIndex = subMesh.getMesh().alphaIndex;
                 subMesh._distanceToCamera = subMesh.getBoundingInfo().boundingSphere.centerWorld.subtract(cameraPosition).length();
+                subMesh._distanceToCameraProjectionZ = RenderingGroup.projectVector(subMesh.getBoundingInfo().boundingBox.centerWorld, transformMatrix).z;
             }
 
             let sortedArray = subMeshes.data.slice(0, subMeshes.length);
@@ -259,10 +275,10 @@
          */
         public static backToFrontSortCompare(a: SubMesh, b:SubMesh) : number {
             // Then distance to camera
-            if (a._distanceToCamera < b._distanceToCamera) {
+            if (a._distanceToCameraProjectionZ < b._distanceToCameraProjectionZ) {
                 return 1;
             }
-            if (a._distanceToCamera > b._distanceToCamera) {
+            if (a._distanceToCameraProjectionZ > b._distanceToCameraProjectionZ) {
                 return -1;
             }
 

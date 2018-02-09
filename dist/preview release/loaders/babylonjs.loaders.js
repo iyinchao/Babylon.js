@@ -3817,6 +3817,8 @@ var BABYLON;
                         vertexData.merge(primitive.vertexData);
                     }
                     new BABYLON.Geometry(node.babylonMesh.name, _this._babylonScene, vertexData, false, node.babylonMesh);
+                    // NOTE: Add refresh here to prevent no Geometry issue in '_loadSkinAsync' function
+                    node.babylonMesh._refreshBoundingInfo(true);
                     // TODO: optimize this so that sub meshes can be created without being overwritten after setting vertex data.
                     // Sub meshes must be cleared and created after setting vertex data because of mesh._createGlobalSubMesh.
                     node.babylonMesh.subMeshes = [];
@@ -4787,7 +4789,7 @@ var BABYLON;
                 }
                 this._loadSampler("#/samplers/" + sampler.index, sampler);
                 this._addPendingData(texture);
-                var babylonTexture = new BABYLON.Texture(null, this._babylonScene, sampler.noMipMaps, false, sampler.samplingMode, function () {
+                var babylonTexture = new BABYLON.Texture(null, this._babylonScene, sampler.noMipMaps, true, sampler.samplingMode, function () {
                     _this._tryCatchOnError(function () {
                         _this._removePendingData(texture);
                     });

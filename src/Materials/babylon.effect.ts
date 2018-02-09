@@ -769,6 +769,18 @@
             this._engine.bindUniformBlock(this._program, blockName, index);
         }
 
+        public setInt(uniformName: string, intValue: number): Effect {
+            var cache = this._valueCache[uniformName];
+            if (cache !== undefined && cache === intValue)
+                return this;
+
+            this._valueCache[uniformName] = intValue;
+
+            this._engine.setInt(this.getUniform(uniformName), intValue);
+
+            return this;
+        }
+
         public setIntArray(uniformName: string, array: Int32Array): Effect {
             this._valueCache[uniformName] = null;
             this._engine.setIntArray(this.getUniform(uniformName), array);

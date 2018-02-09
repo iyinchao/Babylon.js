@@ -2578,7 +2578,6 @@
             var linked = context.getProgramParameter(shaderProgram, context.LINK_STATUS);
 
             if (!linked) {
-                context.validateProgram(shaderProgram);
                 var error = context.getProgramInfoLog(shaderProgram);
                 if (error) {
                     throw new Error(error);
@@ -2628,6 +2627,13 @@
                 effect.onBind(effect);
             }
             effect.onBindObservable.notifyObservers(effect);
+        }
+
+        public setInt(uniform: Nullable<WebGLUniformLocation>, intValue: number): void {
+            if (!uniform)
+                return;
+
+            this._gl.uniform1i(uniform, intValue);
         }
 
         public setIntArray(uniform: Nullable<WebGLUniformLocation>, array: Int32Array): void {
