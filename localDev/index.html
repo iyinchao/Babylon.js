@@ -4,11 +4,12 @@
 <head>
     <title>Local Development</title>
 
-    <script src="https://code.jquery.com/pep/0.4.2/pep.min.js"></script>
+    <!-- <script src="https://code.jquery.com/pep/0.4.2/pep.min.js"></script>
     <script src="https://preview.babylonjs.com/cannon.js"></script>
-    <script src="https://preview.babylonjs.com/Oimo.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.6.2/dat.gui.min.js"></script>
+    <script src="https://preview.babylonjs.com/Oimo.js"></script> -->
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.6.2/dat.gui.min.js"></script> -->
     <script src="../Tools/DevLoader/BabylonLoader.js"></script>
+    <script src="src/vue.js"></script>
     <script src="src/webgl-debug.js"></script>
 
     <style>
@@ -38,11 +39,203 @@
             width: 60px;
             height: 20px;
         }
+
+        ::-webkit-scrollbar-track
+        {
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+
+        ::-webkit-scrollbar
+        {
+            height: 7px;
+            width: 7px;
+        }
+
+        ::-webkit-scrollbar-thumb
+        {
+            background-color: #000000;	
+        }
     </style>
+    <style>
+    #ui {
+        position: absolute;
+        width: 300px;
+        left: 0;
+        top: 0;
+        height: 100vh;
+        background: rgba(0,0,0,0.3);
+        color: rgba(255,255,255,0.5);
+        padding: 5px 0;
+        overflow-y: auto;
+    }
+
+    #ui > .section {
+        padding-bottom: 10px;
+    }
+
+    #ui .section > .title {
+        font-size: 16px;
+        margin-left: 5px;
+        margin-bottom: 10px;
+    }
+
+    #ui .section > .content-wrapper {
+        padding: 5px;
+        background: rgba(0, 0, 0, 0.3);
+    }
+
+    #ui .section > .content-wrapper > .property-title {
+        font-size: 14px;
+        
+    }
+
+    #ui .section > .tree-wrapper {
+        padding: 5px;
+        background: rgba(0, 0, 0, 0.3);
+        overflow: auto;
+        max-height: 600px;
+    }
+
+    #ui .node-tree {
+        padding: 0px 5px;
+    }
+
+    #ui .node-tree .item {
+        margin-left: 15px;
+    }
+
+    #ui .node-tree .item > .data-row {
+        display: flex;
+        align-items: center;
+    }
+
+    #ui .node-tree .item > .data-row > .data-row-name,
+    #ui .section > .content-wrapper .list-view > .item {
+        white-space: nowrap;
+        flex: 1;
+        cursor: default;
+    }
+
+    #ui .node-tree .item.selected > .data-row > .data-row-name,
+    #ui .section > .content-wrapper .list-view > .item.active {
+        background-color: rgb(0, 181, 236);
+        color: rgba(0, 0, 0, 0.705)
+    }
+
+    #ui .node-tree .item > .data-row > .data-row-name:hover,
+    #ui .section > .content-wrapper .list-view > .item:hover {
+        background: rgba(255, 255, 255, 0.3);
+    }
+
+    #ui .node-tree .item.selected > .data-row > .data-row-name:hover,
+    #ui .section > .content-wrapper .list-view > .item.active:hover {
+        background: rgb(25, 201, 255);
+    }
+
+    #ui .node-tree .item > .data-row > .expand-icon {
+        margin-right: 5px;
+        cursor: pointer;
+        min-width: 18px;
+        text-align: center;
+        background: rgba(255, 255, 255, 0.3);
+        border-radius: 100%;
+        height: 18px;
+        line-height: 18px;
+        color: rgba(255,255,255,0.5);
+    }
+
+    #ui .node-tree > .item {
+        margin-left: 0px;
+    }
+
+    #ui .button {
+
+    }
+
+    #ui .section > .content-wrapper .texture-preview {
+        height: 200px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+    }
+
+    #ui .section > .content-wrapper .texture-preview > img {
+        max-width: 300px;
+        max-height: 200px;
+    }
+
+    #ui .section > .content-wrapper .list-view {
+        max-height: 400px;
+        overflow: auto;
+    }
+
+    #ui .section > .content-wrapper .list-view > .item {
+
+    }
+
+    #ui .section > .content-wrapper .list-view > .item.active {
+
+    }
+    </style>
+    
 </head>
 
 <body>
+    <script type="text/x-template" id="vue-root">
+        <div id="ui">
+            <div class="section">
+                <div class="title">Node Tree</div>
+                <div class="tree-wrapper">
+                    <node-tree :type="'mesh'" :tree="tree" v-for="tree in meshTree" :key="tree.data.id"></node-tree>
+                </div>
+            </div>
+            <!--<div class="section" v-if="currentSelectedItem">
+                <div class="title">Node Properties</div>
+                <div class="content-wrapper" v-if="currentSelectedItemType === 'Mesh'">
+                    <div class="property-title" v-if="currentSelectedItem.data.material">Material</div>
+                </div>
+            </div>-->
+            <div class="section" v-if="currentSelectedItemType === 'Mesh' && currentSelectedItem.data.material">
+                <div class="title">Textures</div>
+                <div class="content-wrapper">
+                    <div class="texture-preview" ref="texturePreview"></div>
+                    <div class="list-view">
+                        <div class=""
+                        <div v-for="(item, key) in textureList" 
+                        :key="item.key" class="item" 
+                        :class="{'active': key === currentTextureUid}"
+                        @click="onTextureItemClick(item)">{{item.name}}</div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+        
+    </script>
+    <script type="text/x-template" id="vue-node-tree">
+        <div class="node-tree">
+            <node-tree-item v-if="tree" :item-data="tree" :type="type"></node-tree-item>
+        </div>
+    </script>
+    <script type="text/x-template" id="vue-node-tree-item">
+        <div class="item" :class="{'selected': isSelected}">
+            <div class="data-row">
+                <div class="expand-icon" v-if="itemData.c" @click="onExpandIconClick">{{ isExpand ? '-' : '+' }}</div>
+                <div class="data-row-name" @mouseenter="onRowMouseEnter" @mouseleave="onRowMouseLeave" @click="onRowClick">{{itemData.data.name}}</div>
+            </div>
+            <div class="data-row-child" v-if="childrenCache" v-show="isExpand">
+                <node-tree-item 
+                    v-for="item in childrenCache" 
+                    :item-data="item" 
+                    :key="item.id" 
+                    :type="type"
+                    ref="rows"></node-tree-item>
+            </div>
+        </div>
+    </script>
     <div id="fps">0</div>
+    <div id="ui"></div>
     <canvas id="renderCanvas" touch-action="none"></canvas>
 
     <script>
@@ -73,6 +266,7 @@
                     } else {
                         engine = new BABYLON.Engine(canvas, true, { stencil: true, disableWebGL2Support: false, preserveDrawingBuffer: true });
                     }
+                    engine.enableOfflineSupport = false
 
                     BABYLONDEVTOOLS.Loader.debugShortcut(engine);
 

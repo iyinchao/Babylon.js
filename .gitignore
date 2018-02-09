@@ -162,8 +162,6 @@ node_modules
 !lib.d.ts
 
 # local dev
-localDev/
 /dist/preview release/babylon.custom.js
 /dist/preview release/babylon.custom.max.js
-/localDev/src/index.js
 package-lock.json
