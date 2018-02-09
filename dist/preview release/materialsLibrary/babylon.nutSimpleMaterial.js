@@ -217,7 +217,7 @@ var BABYLON;
                     // Convert to 1 float32 to 2 RBGA values
                     var size = BABYLON.Tools.CeilingPOT(Math.ceil(Math.sqrt(matrices.length * 2)));
                     var boneTextureData = new Uint8Array(new ArrayBuffer(size * size * 4));
-                    BABYLON.Tools.convertMatricesToRGBA8(matrices, boneTextureData, matrices.length / (4 * 4));
+                    BABYLON.Tools.ConvertMatricesToRGBA8(matrices, boneTextureData, matrices.length / (4 * 4));
                     if (!this._boneTexture) {
                         this._boneTexture = BABYLON.RawTexture.CreateRGBATexture(boneTextureData, size, size, scene, false, false, BABYLON.Texture.NEAREST_SAMPLINGMODE, BABYLON.Engine.TEXTURETYPE_UNSIGNED_INT);
                     }

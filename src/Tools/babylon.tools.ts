@@ -50,7 +50,7 @@
          * @param buffer The target Uint8Array
          * @param offset The target buffer offset
          */
-        public static convertFloatToRGBA8(f: number, buffer: Uint8Array, offset: number): void {
+        public static ConvertFloatToRGBA8(f: number, buffer: Uint8Array, offset: number): void {
             let decPart = f % 1;
             let intPart = f - decPart;
 
@@ -81,8 +81,9 @@
          * @author Charlieyin
          * @param buffer The input Uint8Array source
          * @param offset The input buffer offset
+         * @returns The converted float value
          */
-        public static convertRGBA8ToFloat(buffer: Uint8Array, offset: number): number {
+        public static ConvertRGBA8ToFloat(buffer: Uint8Array, offset: number): number {
             var x = buffer[offset] / 255.0;
 	        var y = buffer[offset + 1] / 255.0;
 	        var z = buffer[offset + 2] / 255.0;
@@ -108,7 +109,7 @@
          * @param target Target buffer to store converted RGBA8 format number
          * @param matrixCount The number of matrices stored in source buffer
          */ 
-        public static convertMatricesToRGBA8(source: Float32Array, target: Uint8Array, matrixCount: number): void {
+        public static ConvertMatricesToRGBA8(source: Float32Array, target: Uint8Array, matrixCount: number): void {
             var offsetSource = 0;
             var offsetTarget = 0; 
             for (var c: number = 0; c < matrixCount; c++) {
@@ -116,7 +117,7 @@
                     offsetSource = c * 16 + i;
                     offsetTarget = offsetSource * 8;
 
-                    this.convertFloatToRGBA8(source[offsetSource], target, offsetTarget);
+                    this.ConvertFloatToRGBA8(source[offsetSource], target, offsetTarget);
                 }
             }
         }

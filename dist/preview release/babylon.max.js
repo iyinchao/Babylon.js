@@ -5817,7 +5817,7 @@ var BABYLON;
          * @param buffer The target Uint8Array
          * @param offset The target buffer offset
          */
-        Tools.convertFloatToRGBA8 = function (f, buffer, offset) {
+        Tools.ConvertFloatToRGBA8 = function (f, buffer, offset) {
             var decPart = f % 1;
             var intPart = f - decPart;
             var absDec = Math.abs(decPart);
@@ -5843,8 +5843,9 @@ var BABYLON;
          * @author Charlieyin
          * @param buffer The input Uint8Array source
          * @param offset The input buffer offset
+         * @returns The converted float value
          */
-        Tools.convertRGBA8ToFloat = function (buffer, offset) {
+        Tools.ConvertRGBA8ToFloat = function (buffer, offset) {
             var x = buffer[offset] / 255.0;
             var y = buffer[offset + 1] / 255.0;
             var z = buffer[offset + 2] / 255.0;
@@ -5865,14 +5866,14 @@ var BABYLON;
          * @param target Target buffer to store converted RGBA8 format number
          * @param matrixCount The number of matrices stored in source buffer
          */
-        Tools.convertMatricesToRGBA8 = function (source, target, matrixCount) {
+        Tools.ConvertMatricesToRGBA8 = function (source, target, matrixCount) {
             var offsetSource = 0;
             var offsetTarget = 0;
             for (var c = 0; c < matrixCount; c++) {
                 for (var i = 0; i < 16; i++) {
                     offsetSource = c * 16 + i;
                     offsetTarget = offsetSource * 8;
-                    this.convertFloatToRGBA8(source[offsetSource], target, offsetTarget);
+                    this.ConvertFloatToRGBA8(source[offsetSource], target, offsetTarget);
                 }
             }
         };
