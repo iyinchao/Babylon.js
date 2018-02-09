@@ -1,5 +1,6 @@
 let prompt = require('prompt');
 let shelljs = require('shelljs');
+let path = require('path');
 let fs = require('fs');
 
 let basePath = '../../dist/preview release';
@@ -47,7 +48,7 @@ let packages = [
 ];
 
 //check if logged in
-let loginCheck = shelljs.exec('npm whoami');
+let loginCheck = shelljs.exec('tnpm whoami');
 
 if (loginCheck.code === 0) {
     prompt.start();
@@ -55,13 +56,20 @@ if (loginCheck.code === 0) {
     prompt.get(['version'], function (err, result) {
         let version = result.version;
         packages.forEach((package) => {
-            let packageJson = require(package.path + 'package.json');
+            let packageJson = require(path.join(package.path + 'package.json'));
             packageJson.version = version;
+
+            package.originalName = packageJson.name;
+            packageJson.name = '@tencent/' + packageJson.name;
+
             if (packageJson.peerDependencies) packageJson.peerDependencies.babylonjs = minimumDependency;
             fs.writeFileSync(package.path + 'package.json', JSON.stringify(packageJson, null, 4));
             console.log('Publishing ' + package.name + " from " + package.path);
             //publish the respected package
-            shelljs.exec('npm publish \"' + package.path + "\"");
+            shelljs.exec('tnpm publish \"' + package.path + "\"");
+
+            packageJson.name = package.originalName;
+            fs.writeFileSync(package.path + 'package.json', JSON.stringify(packageJson, null, 4));
         });
     });
 } else {
