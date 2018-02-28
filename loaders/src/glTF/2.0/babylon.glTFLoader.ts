@@ -1615,6 +1615,8 @@ module BABYLON.GLTF2 {
         }
 
         public _loadUriAsync(context: string, uri: string, onSuccess: (data: ArrayBufferView) => void): void {
+            const type = GLTFUtils.GetContextType(context);
+
             if (GLTFUtils.IsBase64(uri)) {
                 onSuccess(new Uint8Array(GLTFUtils.DecodeBase64(uri)));
                 return;
@@ -1638,7 +1640,18 @@ module BABYLON.GLTF2 {
                 });
             }, this._babylonScene.database, true, request => {
                 this._tryCatchOnError(() => {
-                    throw new Error(context + ": Failed to load '" + uri + "'" + (request ? ": " + request.status + " " + request.statusText : ""));
+                    // For images, we use fallback texture if load failed, 
+                    // to prevent the whole loading pipline crash.
+                    if (type === 'images' && Tools.UseFallbackTexture) {
+                        GLTFUtils.GetFallbackTextureBuffer((data) => {
+                            onSuccess(new Uint8Array(data))
+                        });
+
+                        Tools.Warn(context + ": Failed to load '" + uri + "'" + (request ? ": " + request.status + " " + request.statusText : "") + 
+                            ", using fallback texture instead.");
+                    } else {
+                        throw new Error(context + ": Failed to load '" + uri + "'" + (request ? ": " + request.status + " " + request.statusText : ""));
+                    }
                 });
             }) as GLTFLoaderRequest;
 
