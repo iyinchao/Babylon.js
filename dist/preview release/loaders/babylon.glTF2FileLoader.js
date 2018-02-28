@@ -1741,6 +1741,7 @@ var BABYLON;
             };
             GLTFLoader.prototype._loadUriAsync = function (context, uri, onSuccess) {
                 var _this = this;
+                var type = GLTF2.GLTFUtils.GetContextType(context);
                 if (GLTF2.GLTFUtils.IsBase64(uri)) {
                     onSuccess(new Uint8Array(GLTF2.GLTFUtils.DecodeBase64(uri)));
                     return;
@@ -1762,7 +1763,18 @@ var BABYLON;
                     });
                 }, this._babylonScene.database, true, function (request) {
                     _this._tryCatchOnError(function () {
-                        throw new Error(context + ": Failed to load '" + uri + "'" + (request ? ": " + request.status + " " + request.statusText : ""));
+                        // For images, we use fallback texture if load failed, 
+                        // to prevent the whole loading pipline crash.
+                        if (type === 'images' && BABYLON.Tools.UseFallbackTexture) {
+                            GLTF2.GLTFUtils.GetFallbackTextureBuffer(function (data) {
+                                onSuccess(new Uint8Array(data));
+                            });
+                            BABYLON.Tools.Warn(context + ": Failed to load '" + uri + "'" + (request ? ": " + request.status + " " + request.statusText : "") +
+                                ", using fallback texture instead.");
+                        }
+                        else {
+                            throw new Error(context + ": Failed to load '" + uri + "'" + (request ? ": " + request.status + " " + request.statusText : ""));
+                        }
                     });
                 });
                 if (request) {
@@ -1994,6 +2006,36 @@ var BABYLON;
             };
             GLTFUtils.ValidateUri = function (uri) {
                 return (uri.indexOf("..") === -1);
+            };
+            /**
+             * Convert context string to its type
+             * @param context Context string
+             */
+            GLTFUtils.GetContextType = function (context) {
+                var parts = context.split('/');
+                return parts[1] ? parts[1] : '';
+            };
+            /**
+             * Get the fallbackTextureBuffer data
+             * @param onSuccess Callback to get fallbackTextureBuffer asynclly
+             */
+            GLTFUtils.GetFallbackTextureBuffer = function (onSuccess) {
+                var _this = this;
+                if (!this.fallbackTextureBuffer) {
+                    var xhr_1 = new XMLHttpRequest();
+                    xhr_1.open("GET", BABYLON.Tools.fallbackTexture);
+                    xhr_1.responseType = "arraybuffer";
+                    xhr_1.onload = function () {
+                        if (xhr_1.status === 200) {
+                            _this.fallbackTextureBuffer = new Uint8Array(xhr_1.response);
+                            onSuccess(_this.fallbackTextureBuffer);
+                        }
+                    };
+                    xhr_1.send();
+                }
+                else {
+                    onSuccess(this.fallbackTextureBuffer);
+                }
             };
             return GLTFUtils;
         }());

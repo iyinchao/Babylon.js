@@ -465,6 +465,7 @@ declare module BABYLON.GLTF2 {
     * Utils functions for GLTF
     */
     class GLTFUtils {
+        private static fallbackTextureBuffer;
         /**
         * If the uri is a base64 string
         * @param uri: the uri to test
@@ -476,6 +477,16 @@ declare module BABYLON.GLTF2 {
         */
         static DecodeBase64(uri: string): ArrayBuffer;
         static ValidateUri(uri: string): boolean;
+        /**
+         * Convert context string to its type
+         * @param context Context string
+         */
+        static GetContextType(context: string): string;
+        /**
+         * Get the fallbackTextureBuffer data
+         * @param onSuccess Callback to get fallbackTextureBuffer asynclly
+         */
+        static GetFallbackTextureBuffer(onSuccess: (buffer: Uint8Array) => void): void;
     }
 }
 
