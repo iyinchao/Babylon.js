@@ -82,12 +82,15 @@ function transformTexture (scene) {
 
     window.activeMeshes = activeMeshes
 
-    const mat = new BABYLON.NutSimpleMaterial('simple', scene)
+    const mat = new BABYLON.BackgroundMaterial('simple', scene)
+    mat.disableLighting = true;
+    
     // TODO: wrong face definition
     mat.backFaceCulling = false
     // mat.alpha = 0.999
 
     activeMeshes.forEach((mesh) => {
+        mesh.doubleSide
         // clone texture
         const tList = mesh.material.getActiveTextures()
         if (tList.length > 0) {
@@ -361,7 +364,7 @@ var delayCreateScene = function () {
     // var currentSkybox = scene.createDefaultSkybox(hdrTexture, true);
 
     // Append glTF model to scene.
-    BABYLON.SceneLoader.Append(`https://dev.asset.qq.com/assets-local/${assetName}/`, "scene.gltf", scene, function (scene) {
+    BABYLON.SceneLoader.Append(`http://localhost:1338/localDev/.models/${assetName}/`, "scene.gltf", scene, function (scene) {
         // Create a default arc rotate camera and light.
         // scene.createDefaultCameraOrLight(true, true, true);
 

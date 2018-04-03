@@ -73,7 +73,13 @@ void main(void) {
 #endif
 
 	// Lighting
+	// If no light is defined (e.g. disableLighting is true), we use the original baseColor.
+#ifdef LIGHT0
 	vec3 diffuseBase = vec3(0., 0., 0.);
+#else
+	vec3 diffuseBase = vec3(1.0, 1.0, 1.0);
+#endif
+
     lightingInfo info;
 	float shadow = 1.;
     float glossiness = 0.;
