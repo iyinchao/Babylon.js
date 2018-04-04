@@ -195,9 +195,6 @@
 
                                         this._vertexSourceCode = "#define SHADER_NAME vertex:" + vertex + "\n" + migratedVertexCode;
                                         this._fragmentSourceCode = "#define SHADER_NAME fragment:" + fragment + "\n" + migratedFragmentCode;
-
-                                        console.log(this._vertexSourceCode)
-                                        console.log(this._fragmentSourceCode)
                                     } else {
                                         this._vertexSourceCode = migratedVertexCode;
                                         this._fragmentSourceCode = migratedFragmentCode;

@@ -734,6 +734,7 @@
         private _performanceMonitor = new PerformanceMonitor();
         private _fps = 60;
         private _deltaTime = 0;
+
         /**
          * Turn this value on if you want to pause FPS computation when in background
          */
@@ -1088,7 +1089,10 @@
             this._badOS = /iPad/i.test(navigator.userAgent) || /iPhone/i.test(navigator.userAgent);
 
             // Detect if we are running on a faulty buggy desktop OS.
-            this._badDesktopOS = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+            // NOTE: Fixed
+            this._badDesktopOS = Tools.getUAInfo().product === 'safari' ? true : false;
+
+            this._fixCompatibility();
 
             Tools.Log("Babylon.js engine (v" + Engine.Version + ") launched");
 
@@ -5077,6 +5081,39 @@
             this._performanceMonitor.sampleFrame();
             this._fps = this._performanceMonitor.averageFPS;
             this._deltaTime = this._performanceMonitor.instantaneousFrameTime || 0;
+        }
+
+        // NOTE: Fixed safari quinks
+        // Safari needs at least one material without alpha blending together with 
+        // other alpha blending materials, otherwise, alpha blend mesh will not 
+        // appear at all. This could be a bug.
+        private _fixCompatibility() {
+            if (Tools.getUAInfo().product === 'safari') {
+                let beginObserver:Nullable<Observer<Engine>> = null;
+                let endObserver:Nullable<Observer<Engine>> = null;
+                const dummyMeshName = '__SAFARI_COMPAT_FIX__';
+
+                const beginObserverFunc = () => {
+                    if (Engine.LastCreatedScene) {
+                        endObserver = this.onEndFrameObservable.add(endObserverFunc);
+                        // Create a dummyMesh, with super small size 
+                        // (0.0001 * 5k resolution = less than 1px)
+                        MeshBuilder.CreatePlane(dummyMeshName, { size: 0.0001 }, Engine.LastCreatedScene);
+                        this.onBeginFrameObservable.remove(beginObserver);
+                    }
+                };
+
+                const endObserverFunc = () => {
+                    // Clear up
+                    // NOTE: Need to find a perfect timing to remove the dummyMesh,
+                    // However, if we removed the mesh, when resize (or other rendering
+                    // interrupts), the fix will not work.
+                    this.onEndFrameObservable.remove(endObserver);
+                };
+
+                // Add the fix when rendering started
+                beginObserver = this.onBeginFrameObservable.add(beginObserverFunc);
+            }
         }
 
         public _readTexturePixels(texture: InternalTexture, width: number, height: number, faceIndex = -1): ArrayBufferView {

@@ -5,6 +5,13 @@
 
     // Screenshots
     var screenshotCanvas: HTMLCanvasElement;
+    
+    var uaInfoReady = false;
+    var uaInfo = {
+        product: '',
+        family: '',
+        os: ''
+    };
 
     var cloneValue = (source: any, destinationObject: any) => {
         if (!source)
@@ -1203,6 +1210,64 @@
 
         public static IsWindowObjectExist(): boolean {
             return (typeof window) !== "undefined";
+        }
+
+        /**
+         * @description Basic support to get userAgent's info
+         */
+        public static getUAInfo() {
+            if (uaInfoReady) {
+                return uaInfo;
+            }
+
+            const ua = navigator.userAgent;
+            const vendor = navigator.vendor || '';
+            const platform = navigator.platform || '';
+
+            // Product:
+            // See: https://stackoverflow.com/a/31732310
+            const isSafari = vendor && vendor.indexOf('Apple') > -1 && 
+                ua && !ua.match('CriOS');
+            if (isSafari) {
+                uaInfo.product = 'safari'
+            }
+            
+            // Kinds:
+            // See: https://stackoverflow.com/a/12625907
+            uaInfo.family = '';
+            const isWebKit = 'WebkitAppearance' in document.documentElement.style;
+            if (isWebKit) {
+                uaInfo.family = 'webkit'
+            }
+
+            // OS:
+            // See: https://stackoverflow.com/a/38241481
+            uaInfo.os = '';
+            const os = (() => {
+                var macosPlatforms = ['Macintosh', 'MacIntel', 'MacPPC', 'Mac68K'],
+                    windowsPlatforms = ['Win32', 'Win64', 'Windows', 'WinCE'],
+                    iosPlatforms = ['iPhone', 'iPad', 'iPod'],
+                    os = null;
+                
+                if (macosPlatforms.indexOf(platform) !== -1) {
+                    os = 'Mac OS';
+                } else if (iosPlatforms.indexOf(platform) !== -1) {
+                    os = 'iOS';
+                } else if (windowsPlatforms.indexOf(platform) !== -1) {
+                    os = 'Windows';
+                } else if (/Android/.test(ua)) {
+                    os = 'Android';
+                } else if (!os && /Linux/.test(platform)) {
+                    os = 'Linux';
+                }
+                
+                return os;
+            })()
+
+            uaInfo.os = os || '';
+
+            uaInfoReady = true;
+            return uaInfo;
         }
 
         // Performances

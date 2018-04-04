@@ -5793,6 +5793,12 @@ var BABYLON;
 (function (BABYLON) {
     // Screenshots
     var screenshotCanvas;
+    var uaInfoReady = false;
+    var uaInfo = {
+        product: '',
+        family: '',
+        os: ''
+    };
     var cloneValue = function (source, destinationObject) {
         if (!source)
             return null;
@@ -6819,6 +6825,56 @@ var BABYLON;
         });
         Tools.IsWindowObjectExist = function () {
             return (typeof window) !== "undefined";
+        };
+        /**
+         * @description Basic support to get userAgent's info
+         */
+        Tools.getUAInfo = function () {
+            if (uaInfoReady) {
+                return uaInfo;
+            }
+            var ua = navigator.userAgent;
+            var vendor = navigator.vendor || '';
+            var platform = navigator.platform || '';
+            // Product:
+            // See: https://stackoverflow.com/a/31732310
+            var isSafari = vendor && vendor.indexOf('Apple') > -1 &&
+                ua && !ua.match('CriOS');
+            if (isSafari) {
+                uaInfo.product = 'safari';
+            }
+            // Kinds:
+            // See: https://stackoverflow.com/a/12625907
+            uaInfo.family = '';
+            var isWebKit = 'WebkitAppearance' in document.documentElement.style;
+            if (isWebKit) {
+                uaInfo.family = 'webkit';
+            }
+            // OS:
+            // See: https://stackoverflow.com/a/38241481
+            uaInfo.os = '';
+            var os = (function () {
+                var macosPlatforms = ['Macintosh', 'MacIntel', 'MacPPC', 'Mac68K'], windowsPlatforms = ['Win32', 'Win64', 'Windows', 'WinCE'], iosPlatforms = ['iPhone', 'iPad', 'iPod'], os = null;
+                if (macosPlatforms.indexOf(platform) !== -1) {
+                    os = 'Mac OS';
+                }
+                else if (iosPlatforms.indexOf(platform) !== -1) {
+                    os = 'iOS';
+                }
+                else if (windowsPlatforms.indexOf(platform) !== -1) {
+                    os = 'Windows';
+                }
+                else if (/Android/.test(ua)) {
+                    os = 'Android';
+                }
+                else if (!os && /Linux/.test(platform)) {
+                    os = 'Linux';
+                }
+                return os;
+            })();
+            uaInfo.os = os || '';
+            uaInfoReady = true;
+            return uaInfo;
         };
         Object.defineProperty(Tools, "PerformanceNoneLogLevel", {
             get: function () {
@@ -8340,7 +8396,9 @@ var BABYLON;
             // Detect if we are running on a faulty buggy OS.
             this._badOS = /iPad/i.test(navigator.userAgent) || /iPhone/i.test(navigator.userAgent);
             // Detect if we are running on a faulty buggy desktop OS.
-            this._badDesktopOS = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+            // NOTE: Fixed
+            this._badDesktopOS = BABYLON.Tools.getUAInfo().product === 'safari' ? true : false;
+            this._fixCompatibility();
             BABYLON.Tools.Log("Babylon.js engine (v" + Engine.Version + ") launched");
             this.enableOfflineSupport = (BABYLON.Database !== undefined);
         }
@@ -12086,6 +12144,36 @@ var BABYLON;
             this._performanceMonitor.sampleFrame();
             this._fps = this._performanceMonitor.averageFPS;
             this._deltaTime = this._performanceMonitor.instantaneousFrameTime || 0;
+        };
+        // NOTE: Fixed safari quinks
+        // Safari needs at least one material without alpha blending together with 
+        // other alpha blending materials, otherwise, alpha blend mesh will not 
+        // appear at all. This could be a bug.
+        Engine.prototype._fixCompatibility = function () {
+            var _this = this;
+            if (BABYLON.Tools.getUAInfo().product === 'safari') {
+                var beginObserver_1 = null;
+                var endObserver_1 = null;
+                var dummyMeshName_1 = '__SAFARI_COMPAT_FIX__';
+                var beginObserverFunc = function () {
+                    if (Engine.LastCreatedScene) {
+                        endObserver_1 = _this.onEndFrameObservable.add(endObserverFunc_1);
+                        // Create a dummyMesh, with super small size 
+                        // (0.0001 * 5k resolution = less than 1px)
+                        BABYLON.MeshBuilder.CreatePlane(dummyMeshName_1, { size: 0.0001 }, Engine.LastCreatedScene);
+                        _this.onBeginFrameObservable.remove(beginObserver_1);
+                    }
+                };
+                var endObserverFunc_1 = function () {
+                    // Clear up
+                    // NOTE: Need to find a perfect timing to remove the dummyMesh,
+                    // However, if we removed the mesh, when resize (or other rendering
+                    // interrupts), the fix will not work.
+                    _this.onEndFrameObservable.remove(endObserver_1);
+                };
+                // Add the fix when rendering started
+                beginObserver_1 = this.onBeginFrameObservable.add(beginObserverFunc);
+            }
         };
         Engine.prototype._readTexturePixels = function (texture, width, height, faceIndex) {
             if (faceIndex === void 0) { faceIndex = -1; }
@@ -17665,7 +17753,7 @@ var BABYLON;
             if (renderParticles) {
                 this._renderParticles(activeMeshes);
             }
-            if (this.onBeforeTransparentRendering) {
+            if (this._transparentSubMeshes.length !== 0 && this.onBeforeTransparentRendering) {
                 this.onBeforeTransparentRendering();
             }
             // Transparent
@@ -26645,8 +26733,6 @@ var BABYLON;
                                         var fragment = baseName.fragmentElement || baseName.fragment || baseName;
                                         _this._vertexSourceCode = "#define SHADER_NAME vertex:" + vertex + "\n" + migratedVertexCode;
                                         _this._fragmentSourceCode = "#define SHADER_NAME fragment:" + fragment + "\n" + migratedFragmentCode;
-                                        console.log(_this._vertexSourceCode);
-                                        console.log(_this._fragmentSourceCode);
                                     }
                                     else {
                                         _this._vertexSourceCode = migratedVertexCode;

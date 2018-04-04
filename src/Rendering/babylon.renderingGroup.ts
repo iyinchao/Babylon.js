@@ -127,7 +127,7 @@
                 this._renderParticles(activeMeshes);
             }
 
-            if (this.onBeforeTransparentRendering) {
+            if (this._transparentSubMeshes.length !== 0 && this.onBeforeTransparentRendering) {
                 this.onBeforeTransparentRendering();
             }
 
