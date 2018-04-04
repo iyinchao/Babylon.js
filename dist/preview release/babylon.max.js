@@ -26645,6 +26645,8 @@ var BABYLON;
                                         var fragment = baseName.fragmentElement || baseName.fragment || baseName;
                                         _this._vertexSourceCode = "#define SHADER_NAME vertex:" + vertex + "\n" + migratedVertexCode;
                                         _this._fragmentSourceCode = "#define SHADER_NAME fragment:" + fragment + "\n" + migratedFragmentCode;
+                                        console.log(_this._vertexSourceCode);
+                                        console.log(_this._fragmentSourceCode);
                                     }
                                     else {
                                         _this._vertexSourceCode = migratedVertexCode;

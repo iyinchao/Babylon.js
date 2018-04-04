@@ -1463,10 +1463,16 @@ var BABYLON;
             _this.diffuseColor = new BABYLON.Color3(1, 1, 1);
             _this._disableLighting = false;
             _this._maxSimultaneousLights = 4;
+            _this.forceAlphaBlend = false;
             return _this;
         }
         NutSimpleMaterial.prototype.needAlphaBlending = function () {
-            return (this.alpha < 1.0);
+            if (this.forceAlphaBlend || this.alpha < 1.0) {
+                return true;
+            }
+            else {
+                return false;
+            }
         };
         NutSimpleMaterial.prototype.needAlphaTesting = function () {
             return false;
@@ -1744,6 +1750,9 @@ var BABYLON;
         __decorate([
             BABYLON.expandToProperty("_markAllSubMeshesAsLightsDirty")
         ], NutSimpleMaterial.prototype, "maxSimultaneousLights", void 0);
+        __decorate([
+            BABYLON.serialize()
+        ], NutSimpleMaterial.prototype, "forceAlphaBlend", void 0);
         return NutSimpleMaterial;
     }(BABYLON.PushMaterial));
     BABYLON.NutSimpleMaterial = NutSimpleMaterial;
