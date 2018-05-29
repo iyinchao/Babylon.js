@@ -82,9 +82,14 @@ function transformTexture (scene) {
 
     window.activeMeshes = activeMeshes
 
-    const mat = new BABYLON.NutSimpleMaterial('simple', scene)
+    const mat = new BABYLON.NutSimpleMaterial('simple' + Math.random(), scene)
+    mat.disableLighting = true;
+
+    // var plane = BABYLON.MeshBuilder.CreatePlane("plane", {width: 0.00001}, scene);
+    // plane.material = new BABYLON.NutSimpleMaterial('simple' + Math.random(), scene)
+    
     // TODO: wrong face definition
-    mat.backFaceCulling = false
+    mat.backFaceCulling = true
     // mat.alpha = 0.999
 
     activeMeshes.forEach((mesh) => {
@@ -98,6 +103,7 @@ function transformTexture (scene) {
             mesh.material.diffuseTexture = texture
         }
     })
+
 
 
     setTimeout(() => {
@@ -345,23 +351,28 @@ var delayCreateScene = function () {
 
     scene.useRightHandedSystem = true;
 
-    var showAxis = function(size) {
-		var axisX = BABYLON.Mesh.CreateLines("axisX", [new BABYLON.Vector3.Zero(), new BABYLON.Vector3(size, 0, 0) ], scene);
-  		axisX.color = new BABYLON.Color3(1, 0, 0);
-  		var axisY = BABYLON.Mesh.CreateLines("axisY", [new BABYLON.Vector3.Zero(), new BABYLON.Vector3(0, size, 0) ], scene);
-  		axisY.color = new BABYLON.Color3(0, 1, 0);
-  		var axisZ = BABYLON.Mesh.CreateLines("axisZ", [new BABYLON.Vector3.Zero(), new BABYLON.Vector3(0, 0, size) ], scene);
-  		axisZ.color = new BABYLON.Color3(0, 0, 1);
-	};
+    // var showAxis = function(size) {
+	// 	var axisX = BABYLON.Mesh.CreateLines("axisX", [new BABYLON.Vector3.Zero(), new BABYLON.Vector3(size, 0, 0) ], scene);
+  	// 	axisX.color = new BABYLON.Color3(1, 0, 0);
+  	// 	var axisY = BABYLON.Mesh.CreateLines("axisY", [new BABYLON.Vector3.Zero(), new BABYLON.Vector3(0, size, 0) ], scene);
+  	// 	axisY.color = new BABYLON.Color3(0, 1, 0);
+  	// 	var axisZ = BABYLON.Mesh.CreateLines("axisZ", [new BABYLON.Vector3.Zero(), new BABYLON.Vector3(0, 0, size) ], scene);
+  	// 	axisZ.color = new BABYLON.Color3(0, 0, 1);
+	// };
 
-	showAxis(10);
+    // showAxis(10);
+    // var plane = new BABYLON.Mesh('sdf', scene);
+    // var sphere = BABYLON.Mesh.CreatePlane("sphere1", 160, scene);
+
+        // Move the sphere upward 1/2 its height
+        // sphere.position.y = 1;
 
     // Create a default skybox with an environment.
     // var hdrTexture = BABYLON.CubeTexture.CreateFromPrefilteredData("textures/environment.dds", scene);
     // var currentSkybox = scene.createDefaultSkybox(hdrTexture, true);
 
     // Append glTF model to scene.
-    BABYLON.SceneLoader.Append(`https://dev.asset.qq.com/assets-local/${assetName}/`, "scene.gltf", scene, function (scene) {
+    BABYLON.SceneLoader.Append(`http://localhost:1338/localDev/.models/${assetName}/`, "scene.gltf", scene, function (scene) {
         // Create a default arc rotate camera and light.
         // scene.createDefaultCameraOrLight(true, true, true);
 
@@ -380,13 +391,18 @@ var delayCreateScene = function () {
         camera.attachControl(canvas, true);
 
         // Create Light
-        var hemiLight = new BABYLON.HemisphericLight("default light", BABYLON.Vector3.Up(), scene);
-        hemiLight.intensity = 1.3;
+        // This creates a light, aiming 0,1,0 - to the sky (non-mesh)
+        var light = new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(0, 1, 0), scene);
+
+        // Default intensity is 1. Let's dim the light a small amount
+        light.intensity = 0.7;
 
         // scene.activeCamera.alpha += Math.PI;
 
         // Replace textures
         transformTexture(scene)
+
+        // var sphere = BABYLON.Mesh.CreatePlane("sphere1", 160, scene);
 
         // Load texture json
         // var assetsManager = new BABYLON.AssetsManager(scene);
@@ -403,6 +419,9 @@ var delayCreateScene = function () {
 
         // var t = new BABYLON.TextureAssetTask('image task', 'https://dev.asset.qq.com/assets-local/textures/hair_6_1.png')
         // t.run(scene, () => { console.log('haha') })
+
+        var spector = new SPECTOR.Spector();
+        spector.displayUI();
     });
 
     window.$babylon = {}

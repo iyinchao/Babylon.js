@@ -9,6 +9,7 @@ declare module BABYLON {
         disableLighting: boolean;
         private _maxSimultaneousLights;
         maxSimultaneousLights: number;
+        forceAlphaBlend: boolean;
         private _renderId;
         constructor(name: string, scene: Scene);
         needAlphaBlending(): boolean;

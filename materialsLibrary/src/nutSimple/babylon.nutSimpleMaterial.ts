@@ -46,6 +46,9 @@ module BABYLON {
         @expandToProperty("_markAllSubMeshesAsLightsDirty")
         public maxSimultaneousLights: number; 
 
+        @serialize()
+        public forceAlphaBlend = false;
+
         private _renderId: number;
 
         constructor(name: string, scene: Scene) {
@@ -53,7 +56,11 @@ module BABYLON {
         }
 
         public needAlphaBlending(): boolean {
-            return (this.alpha < 1.0);
+            if (this.forceAlphaBlend || this.alpha < 1.0) {
+                return true;
+            } else {
+                return false;
+            }
         }
 
         public needAlphaTesting(): boolean {
