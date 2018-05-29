@@ -73,7 +73,13 @@ void main(void) {
 #endif
 
 	// Lighting
-	vec3 diffuseBase = vec3(0., 0., 0.);
+	// If no light defined, use 100% diffuse color
+	#ifdef LIGHT{X}
+		vec3 diffuseBase = vec3(0., 0., 0.);
+	#else
+		vec3 diffuseBase = vec3(1., 1., 1.);
+	#endif
+
     lightingInfo info;
 	float shadow = 1.;
     float glossiness = 0.;

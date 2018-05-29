@@ -495,7 +495,7 @@
         }
 
         public static PreprocessUrl = (url: string) => {
-            return encodeURI(url);
+            return url;
         }
 
         public static LoadImage(url: any, onLoad: (img: HTMLImageElement) => void, onError: (message?: string, exception?: any) => void, database: Nullable<Database>): HTMLImageElement {
